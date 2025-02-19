@@ -71,6 +71,6 @@ Giving Input:
 ![Image](https://github.com/user-attachments/assets/e8e63faf-113b-4fe2-b160-ddaf130fe122)
 
 Output:
-
+![Image](https://github.com/user-attachments/assets/016b94a2-af6f-4e26-b6be-9d6dc9ff2675)
 
 
