@@ -15,6 +15,8 @@
 ## DESCRIPTION
 The code is Designed to generate text using the GPT-2 model from the Transformers library by Hugging Face.GPT-2 is a state-of-the-art language model that can generate human-like text based on a given prompt.
 
+EDITOR PLATFORM: VS CODE
+
 Key Components of the Code:
 Imports:
 torch: The PyTorch library, which is the backend framework used for deep learning.
