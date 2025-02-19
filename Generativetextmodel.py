@@ -1,68 +1,47 @@
-import tensorflow as tf
-import tensorflow_hub as hub
-import numpy as np
-import matplotlib.pyplot as plt
-from PIL import Image
+import torch
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
-# Function to load and preprocess the image
-def load_image(image_path):
-    img = Image.open(image_path)
-    img = img.resize((256, 256))  # Resize for faster processing
-    img = np.array(img) / 255.0  # Normalize to [0, 1]
-    img = img.astype(np.float32)  # Ensure the image is float32
-    img = np.expand_dims(img, axis=0)  # Add batch dimension
-    return img
-# Function to display images
-def display_images(content_image, style_image, generated_image):
-    plt.figure(figsize=(12, 12))
+# Load pre-trained model and tokenizer
+model_name = "gpt2"  # You can also use "gpt2-medium", "gpt2-large", or "gpt2-xl"
+tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+model = GPT2LMHeadModel.from_pretrained(model_name)
 
-    plt.subplot(1, 3, 1)
-    plt.title("Content Image")
-    plt.imshow(content_image[0])  # Remove batch dimension for display
-    plt.axis('off')
+# Set the model to evaluation mode
+model.eval()
 
-    plt.subplot(1, 3, 2)
-    plt.title("Style Image")
-    plt.imshow(style_image[0])  # Remove batch dimension for display
-    plt.axis('off')
+# Function to generate text based on a prompt
+def generate_text(prompt, max_length=150, num_return_sequences=1):
+    # Encode the input prompt
+    input_ids = tokenizer.encode(prompt, return_tensors='pt')
 
-    plt.subplot(1, 3, 3)
-    plt.title("Generated Image")
-    plt.imshow(generated_image[0])  # Remove batch dimension for display
-    plt.axis('off')
+    # Generate text
+    with torch.no_grad():
+        output = model.generate(
+            input_ids,
+            max_length=max_length,
+            num_return_sequences=num_return_sequences,
+            no_repeat_ngram_size=2,
+            early_stopping=True,
+            pad_token_id=tokenizer.eos_token_id  # Use EOS token for padding
+        )
 
-    plt.show()
+    # Decode the generated text
+    generated_texts = [tokenizer.decode(output[i], skip_special_tokens=True) for i in range(num_return_sequences)]
+    return generated_texts
 
-# Main function for Fast Style Transfer
-def fast_style_transfer(content_path, style_path):
-    # Load images
-    content_image = load_image(content_path)
-    style_image = load_image(style_path)
-
-    # Load the pre-trained model from TensorFlow Hub
-    model = hub.load("https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/1")
-
-    # Perform style transfer
-    stylized_image = model(tf.constant(content_image), tf.constant(style_image))[0]
-
-    # Convert the generated image to a displayable format
-    stylized_image = np.array(stylized_image) * 255.0
-    stylized_image = np.clip(stylized_image, 0, 255).astype(np.uint8)
-
-    return content_image, style_image, stylized_image
-
-# User input for content and style images
-content_path = input("Enter the path to the content image: ")
-style_path = input("Enter the path to the style image: ")
-
-# Run Fast Style Transfer
-content_image, style_image, generated_image = fast_style_transfer(content_path, style_path)
-
-# Display the results
-display_images(content_image, style_image, generated_image)
-
-# Save the generated image
-output_path = input("Enter the path to save the styled image (e.g., styled_image.jpg): ")
-# Remove the batch dimension before saving
-Image.fromarray(generated_image[0]).save(output_path)
-print(f"Styled image saved at {output_path}")
+# Main loop for user input
+if _name_ == "_main_":
+    print("Welcome to the Text Generation Model!")
+    while True:
+        user_prompt = input("Enter a prompt (or type 'exit' to quit): ")
+        if user_prompt.lower() == 'exit':
+            break
+        
+        # Generate text based on the user prompt
+        generated_paragraphs = generate_text(user_prompt, max_length=200, num_return_sequences=1)  # Increased max_length
+        
+        # Display the generated text
+        print("\nGenerated Text:")
+        for paragraph in generated_paragraphs:
+            print(paragraph)
+        print("\n" + "="*50 + "\n")
