@@ -65,7 +65,7 @@ This code snippet demonstrates a simple yet powerful application of GPT-2 for te
 conversational agents, content generation, or creative writing aids. It's a good starting point for anyone interested in working with state-of-the-art language 
 models in Python using the Hugging Face transformers library.
 
-#OUTPUT:
+# OUTPUT:
 
 Giving Input: 
 ![Image](https://github.com/user-attachments/assets/e8e63faf-113b-4fe2-b160-ddaf130fe122)
