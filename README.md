@@ -64,3 +64,6 @@ Content Moderation and filtering
 This code snippet demonstrates a simple yet powerful application of GPT-2 for text generation. It can be easily extended or modified for more specific tasks like 
 conversational agents, content generation, or creative writing aids. It's a good starting point for anyone interested in working with state-of-the-art language 
 models in Python using the Hugging Face transformers library.
+
+#OUTPUT:
+
