@@ -67,3 +67,10 @@ models in Python using the Hugging Face transformers library.
 
 #OUTPUT:
 
+Giving Input: 
+![Image](https://github.com/user-attachments/assets/e8e63faf-113b-4fe2-b160-ddaf130fe122)
+
+Output:
+
+
+
